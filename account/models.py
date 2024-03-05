@@ -1,0 +1,14 @@
+from django.contrib.auth.models import User
+from django.db import models
+
+role_choices = [
+        ('Patient', 'Patient'),
+        ('Doctor', 'Doctor')
+    ]
+class UserProfile(models.Model):
+    user_account = models.OneToOneField(User, on_delete=models.CASCADE)
+    nid = models.CharField(max_length=20, unique=True)  # Assuming NID is a string, adjust as needed
+    role = models.CharField(max_length=10, choices=role_choices)
+
+    def __str__(self):
+        return self.user.username
