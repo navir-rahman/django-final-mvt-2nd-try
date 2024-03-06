@@ -10,11 +10,18 @@
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                      <li><a href="index.html" class="active">Home</a></li>
+                      <li><a href="{% url "home" %}" class="active">Home</a></li>
                       <li><a href="shop.html">Our Shop</a></li>
                       <li><a href="product-details.html">Product Details</a></li>
                       <li><a href="contact.html">Contact Us</a></li>
-                      <li><a href="#">Sign In</a></li>
+                      <li><a href="{% url "addCampaign" %}">Add Campaign</a></li>
+                      {% if user.is_authenticated %}
+                      <li><a href="{% url "profile" %}">Profile</a></li>
+                      <li><a href="{% url "logout" %}">Sign Out</a></li>
+                      {% else %}
+                      <li><a href="{% url "register" %}">Sign Up</a></li>
+                      <li><a href="{% url "Sign In" %}">Sign In</a></li>
+                      {% endif %}
                   </ul>   
                     <a class='menu-trigger'>
                         <span>Menu</span>

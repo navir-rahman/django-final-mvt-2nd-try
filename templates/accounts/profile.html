@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-heading header-text">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h3>Profile</h3>
+          <span class="breadcrumb"><a href="#">Home</a>  >  Profile</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-page section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 align-self-center">
+          <div class="left-text">
+{% comment %} profile {% endcomment %}
+            <h3>{{ form.username.value }}</h3>
+            <span class="breadcrumb"><a href="#">First Name</a>  :  {{ form.first_name.value }}</span>
+            <span class="breadcrumb"><a href="#">Last Name</a>  :  {{ form.last_name.value }}</span>
+            <span class="breadcrumb"><a href="#">Email</a>  :  {{ form.email.value }}</span>
+            <span class="breadcrumb"><a href="#">NID</a>  :  {{ form.nid.value }}</span>
+          </div>
+        </div>
+        <div class="col-lg-8">
+ {% comment %} form {% endcomment %}
+ <div class=" align-self-center">
+    <div class="left-text right-content">
+      <div class="section-heading">
+          <h6>Upsate Data</h6>
+          <h2>Profile</h2>
+        </div>
+      <form id="contact-form" action="" method="post">
+          {% csrf_token %}
+          {% for field in form %}
+            {{ field }}
+          {% endfor %}
+          
+        {% comment %} <div class="row">
+          <div class="col-lg-12">
+            <fieldset>
+              {{ form.username }}
+              {{ form.username.errors }}
+            </fieldset>
+          </div>
+          <div class="col-lg-12">
+            <fieldset>
+              {{ form.password }}
+              {{ form.password.errors }}
+            </fieldset>
+          </div>{% endcomment %}
+          
+          <div class="col-lg-12">
+            <fieldset>
+              <button type="submit" id="form-submit" class="orange-button">Update</button>
+            </fieldset>
+          </div>
+        </div> 
+      </form>
+    </div>
+  </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+
+{% endblock content %}
