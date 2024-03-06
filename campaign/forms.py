@@ -22,7 +22,6 @@ class CampaignForm(forms.ModelForm):
 
 
 
-
 class CampaignReviewForm(forms.ModelForm):
     class Meta:
         model = CampaignReview

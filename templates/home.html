@@ -92,8 +92,8 @@
         <div class="col-lg-3 col-md-6">
           <div class="item">
             <div class="thumb">
-              <a href="product-details.html"><img src="assets/images/trending-01.jpg" alt=""></a>
-              <span class="price"><em>$28</em>$20</span>
+              <a href="product-details.html"><img src="/{{ dose.campaign.vaccines.image }}" alt=""></a>
+              <span class="price"><em>$28</em>Free</span>
             </div>
             <div class="down-content">
               <span class="category">Vaccine</span>
@@ -127,13 +127,13 @@
         <div class="col-lg-2 col-md-6 col-sm-6">
           <div class="item">
             <div class="thumb">
-              <a href="product-details.html"><img src="assets/images/top-game-01.jpg" alt=""></a>
+              <a href="product-details.html"><img src="{{ camp.vaccines.image }}" alt=""></a>
             </div>
             <div class="down-content">
               <span class="category">Adventure</span>
               <h4>{{ camp.campaign_name }}</h4>
               <span class="category">{{ camp.vaccines }}</span>
-              <a href=""{% url 'campaign_detail' camp.id %}"">Explore</a>
+              <a href="{% url 'campaign_detail' camp.id %}">Explore</a>
             </div>
           </div>
         </div>

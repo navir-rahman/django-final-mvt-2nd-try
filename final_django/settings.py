@@ -134,4 +134,4 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-MEDIA_ROOT = BASE_DIR / 'vaccine_images'
+# MEDIA_ROOT = BASE_DIR / 'vaccine_images'

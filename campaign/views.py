@@ -35,12 +35,13 @@ def campaign_detail(request, campaign_id):
     if request.method == 'GET':
         userInstance = UserProfile.objects.get(user_account =request.user)
         first_dose = request.GET.get('first_dose')
-        print(first_dose, '\n')
-        first_dose_date = timezone.datetime.strptime(first_dose, '%Y-%m-%d')
-        second_dose_date = first_dose_date  + timedelta(days=3)
-        third_dose_date = first_dose_date  + timedelta(days=10)
-        fourth_dose_date = first_dose_date  + timedelta(days=30)
-        DoseBooking.objects.get_or_create(patient=userInstance, campaign=campaign, first_dose_date=first_dose_date, second_dose_date = second_dose_date, third_dose_date=third_dose_date, fourth_dose_date=fourth_dose_date)
+        if first_dose != None:
+            print(first_dose, '\n')
+            first_dose_date = timezone.datetime.strptime(first_dose, '%Y-%m-%d')
+            second_dose_date = first_dose_date  + timedelta(days=3)
+            third_dose_date = first_dose_date  + timedelta(days=10)
+            fourth_dose_date = first_dose_date  + timedelta(days=30)
+            DoseBooking.objects.get_or_create(patient=userInstance, campaign=campaign, first_dose_date=first_dose_date, second_dose_date = second_dose_date, third_dose_date=third_dose_date, fourth_dose_date=fourth_dose_date)
         # book.save()
         return render(request, 'productDetails.html', {'campaign': campaign})
 
