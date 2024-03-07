@@ -1,15 +1,20 @@
-from .forms import VaccineCampaignForm, CampaignForm, CampaignReviewForm
+from .forms import VaccineCampaignForm, CampaignForm, CampaignReviewForm, DoseBookingForm
 from account.models import UserProfile
 from .models import DoseBooking, Campaign, CampaignReview
 from django.shortcuts import render, get_object_or_404, redirect
 from datetime import timedelta
 from django.utils import timezone
+from .decorators import doctor_required, patient_required
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView
+from django.http import HttpResponseRedirect
+
 
 # Create your views here.
 # def addCampaign(request):
 #     form = create_campaign(request)
 #     return render(request, 'makecampaign.html', {'form': form})
-
+@doctor_required
 def addCampaign(request):
     if request.method == 'POST':
         vaccine_form = VaccineCampaignForm(request.POST)
@@ -18,7 +23,7 @@ def addCampaign(request):
             vaccine = vaccine_form.save()
             campaign = campaign_form.save(commit=False)
             campaign.vaccines = vaccine
-            print(request.user)
+
             userInstance = UserProfile.objects.get(user_account =request.user)
             campaign.doctor = userInstance
             campaign.save()
@@ -49,6 +54,7 @@ def campaign_detail(request, campaign_id):
 
 
 def dose_detail(request, dose_id):
+
     dose = get_object_or_404(DoseBooking, pk=dose_id)
     # campaign = get_object_or_404(Campaign, pk=campaign_id)
     reviews = CampaignReview.objects.filter(campaign=dose.campaign.id)
@@ -84,3 +90,44 @@ def dose_detail(request, dose_id):
 #     campaign = get_object_or_404(Campaign, pk=campaign_id)
 #     reviews = CampaignReview.objects.filter(campaign=campaign)
 #     return render(request, 'campaign_detail.html', {'campaign': campaign, 'reviews': reviews})
+
+
+
+
+def all_dose(request):
+    all_dose = DoseBooking.objects.all()
+    return render(request, 'shop.html', {'all_dose': all_dose})
+
+
+
+
+def dose_detail_for_doctor(request, dose_id):
+
+    dose = get_object_or_404(DoseBooking, pk=dose_id)
+    reviews = CampaignReview.objects.filter(campaign=dose.campaign.id)
+    dose_form = DoseBookingForm(instance = dose)
+    form = CampaignReviewForm()
+    if request.method == 'GET':
+        dose_form = DoseBookingForm(request.POST, instance=dose)
+        if dose_form.is_valid():
+            if request.GET.get('first_dose_date') is not None:
+                dose.first_dose_date = request.GET.get('first_dose_date')
+                dose.second_dose_date = request.GET.get('second_dose_date')
+                dose.third_dose_date = request.GET.get('third_dose_date')
+                dose.fourth_dose_date = request.GET.get('fourth_dose_date')
+                dose.save()
+                return redirect('dose_detail_for_doc', dose_id=dose_id)
+    return render(request, 'dose_detail.html', {'dose': dose, 'reviews': reviews, 'form': form, 'page': 'dose_detail_for_doctor', 'dose_form': dose_form})
+
+
+
+class DoseBookingDeleteView(DeleteView):
+    model = DoseBooking
+    success_url = reverse_lazy('all_dose')  # Replace 'success_url_name' with the name of the URL to redirect after deletion
+    template_name = None  # Set template_name to None to bypass template lookup
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.delete()
+        return HttpResponseRedirect(success_url)

@@ -11,10 +11,15 @@
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                       <li><a href="{% url "home" %}" class="active">Home</a></li>
-                      <li><a href="shop.html">Our Shop</a></li>
+                      {% comment %} <li><a href="shop.html">Our Shop</a></li>
                       <li><a href="product-details.html">Product Details</a></li>
-                      <li><a href="contact.html">Contact Us</a></li>
-                      <li><a href="{% url "addCampaign" %}">Add Campaign</a></li>
+                      <li><a href="contact.html">Contact Us</a></li> {% endcomment %}
+                      {% comment %} {% if user.is_authenticated %}
+                         {% if user.userprofile.role == 'Doctor' %} {% endcomment %}
+                        <li><a href="{% url "addCampaign" %}">Add Campaign</a></li>
+                        <li><a href="{% url "all_dose" %}">All Dose</a></li>
+                        {% comment %} {%endif%}
+                      {%endif%} {% endcomment %}
                       {% if user.is_authenticated %}
                       <li><a href="{% url "profile" %}">Profile</a></li>
                       <li><a href="{% url "logout" %}">Sign Out</a></li>

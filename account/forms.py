@@ -13,10 +13,11 @@ role_choices = [
 class UserRegistrationForm(UserCreationForm):
     nid = forms.CharField(max_length=20, required=True)
     role = forms.ChoiceField( choices=role_choices)
-    
+    age = forms.IntegerField()
+    medical_info = forms.CharField(widget=forms.Textarea)
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2', 'nid', 'role']
+        fields = ['username', 'password1', 'password2', 'nid', 'role', 'age', 'medical_info']
 
         # labels = {
         #     'username' : 'User Name',
@@ -35,6 +36,8 @@ class UserRegistrationForm(UserCreationForm):
             'password1' : {'required' : 'Use valid password'},
             'password2' : {'required' : 'User valid password'},
             'nid' : {'required' : 'User NID must be unique'},
+            'age' : {'required' : 'Your age'},
+            'medical_info' : {'required' : 'User medical information'},
         }
 
 
@@ -44,6 +47,8 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['password1'].widget.attrs['placeholder'] = 'Enter your password'
         self.fields['password2'].widget.attrs['placeholder'] = 'Confirm your password'
         self.fields['nid'].widget.attrs['placeholder'] = 'Your NID must be unique'
+        self.fields['age'].widget.attrs['placeholder'] = 'Your age'
+        self.fields['medical_info'].widget.attrs['placeholder'] = 'Your medical info'
 
     def save(self, commit=True):
         user_account = super().save(commit=False)
@@ -52,11 +57,15 @@ class UserRegistrationForm(UserCreationForm):
             user_account.save()
             nid = self.cleaned_data.get('nid')
             role = self.cleaned_data.get('role')
+            age = self.cleaned_data.get('age')
+            medical_info = self.cleaned_data.get('medical_info')
 
             UserProfile.objects.create(
                 user_account = user_account,
                 nid = nid,
                 role = role,
+                age = age,
+                medical_info = medical_info,
             )
 
         return user_account
@@ -67,10 +76,12 @@ class UserRegistrationForm(UserCreationForm):
 class UserUpdateForm(forms.ModelForm):
     nid = forms.CharField(max_length=20, required=True)
     role = forms.ChoiceField(choices=role_choices)
-    
+    age = forms.IntegerField()
+    medical_info = forms.CharField(widget=forms.Textarea)
+
     class Meta:
         model = User
-        fields = ['username','first_name', 'last_name','email', 'nid']  
+        fields = ['username','first_name', 'last_name','email', 'nid', 'age', 'medical_info']  
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -87,6 +98,9 @@ class UserUpdateForm(forms.ModelForm):
             self.fields['email'].widget.attrs['value'] = userInstance.email
             self.fields['nid'].widget.attrs['value'] = userProfile_instance.nid
             # self.fields['role'].widget.attrs['disabled'] = 'disabled'
+            self.fields['medical_info'].widget.attrs['placeholder'] = userProfile_instance.medical_info
+            self.fields['medical_info'].widget.attrs['value'] = userProfile_instance.medical_info
+            self.fields['age'].widget.attrs['value'] = userProfile_instance.age
 
     def save(self, commit=True):
         user_instance = super().save(commit=False)
@@ -96,5 +110,7 @@ class UserUpdateForm(forms.ModelForm):
             print(profile)
             profile.nid = self.cleaned_data['nid']
             profile.role = self.cleaned_data['role']
+            profile.age = self.cleaned_data['age']
+            profile.medical_info = self.cleaned_data['medical_info']
             profile.save()
         return user_instance
