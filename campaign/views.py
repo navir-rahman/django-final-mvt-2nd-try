@@ -48,10 +48,11 @@ def addCampaign(request):
 
 def campaign_detail(request, campaign_id):
     campaign = get_object_or_404(Campaign, pk=campaign_id)
-    var = UserProfile.objects.filter(user_account=request.user).first()
     user_role_doctor =False
-    if var.role == 'Doctor':
-        user_role_doctor = True
+    if request.user.is_authenticated:
+        var = UserProfile.objects.filter(user_account=request.user).first()
+        if var.role == 'Doctor':
+            user_role_doctor = True
 
     if request.method == 'GET':
         userInstance = UserProfile.objects.get(user_account =request.user)
@@ -116,10 +117,12 @@ def dose_detail(request, dose_id):
 
 
 def all_dose(request):
-    var = UserProfile.objects.filter(user_account=request.user).first()
     user_role_doctor =False
-    if var.role == 'Doctor':
-        user_role_doctor = True
+    if request.user.is_authenticated:
+        var = UserProfile.objects.filter(user_account=request.user).first()
+        if var.role == 'Doctor':
+            user_role_doctor = True
+
     all_dose = DoseBooking.objects.all()
     return render(request, 'shop.html', {'all_dose': all_dose, 'user_role_doctor': user_role_doctor})
 

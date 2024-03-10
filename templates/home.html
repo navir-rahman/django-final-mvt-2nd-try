@@ -5,9 +5,9 @@
       <div class="row">
         <div class="col-lg-6 align-self-center">
           <div class="caption header-text">
-            <h6>Welcome to lugx</h6>
-            <h2>BEST GAMING SITE EVER!</h2>
-            <p>LUGX Gaming is free Bootstrap 5 HTML CSS website template for your gaming websites. You can download and use this layout for commercial purposes. Please tell your friends about TemplateMo.</p>
+            <h6>Welcome to BD Vaccine</h6>
+            <h2>BEST SITE EVER!</h2>
+            <p>bd Vaccine is free website for all user. Register/ login check all Vaccines then add the Vaccine you want to take. for doctor you can add new campaign after login</p>
             <div class="search-input">
               <form id="search" action="#">
                 <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword" onkeypress="handle" />
@@ -18,7 +18,7 @@
         </div>
         <div class="col-lg-4 offset-lg-2">
           <div class="right-image">
-            <img src="assets/images/banner-image.jpg" alt="">
+            {% comment %} <img src="{% static "download.jfif" %}" alt=""> {% endcomment %}
             <span class="price">$22</span>
             <span class="offer">-40%</span>
           </div>
@@ -108,6 +108,7 @@
     </div>
   </div>
 
+  {% if user.is_authenticated %}
   <div class="section most-played">
     <div class="container">
       <div class="row">
@@ -142,7 +143,7 @@
       </div>
     </div>
   </div>
-
+{% endif %}
   <div class="section categories">
     <div class="container">
       <div class="row">
