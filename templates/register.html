@@ -51,6 +51,25 @@
                     </div>
                     <div class="col-lg-6">
                       <fieldset>
+                        {{ form.email }}
+                        {{ form.email.errors }}
+                      </fieldset>
+                    </div>
+                    <div class="col-lg-6">
+                      <fieldset>
+                        {{ form.first_name }}
+                        {{ form.first_name.errors }}
+                      </fieldset>
+                    </div>
+                    <div class="col-lg-6">
+                      <fieldset>
+                        {{ form.last_name }}
+                        {{ form.last_name.errors }}
+                      </fieldset>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                      <fieldset>
                         {{ form.password1 }}
                         {{ form.password1.errors }}
                       </fieldset>

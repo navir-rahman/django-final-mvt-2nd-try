@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('accounts/', include('account.urls')),
     path('campaign/', include('campaign.urls')),
+    
 
 
 ]

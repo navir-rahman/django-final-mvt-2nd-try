@@ -17,7 +17,7 @@ class UserRegistrationForm(UserCreationForm):
     medical_info = forms.CharField(widget=forms.Textarea)
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2', 'nid', 'role', 'age', 'medical_info']
+        fields = ['username', 'first_name', 'last_name','email', 'password1', 'password2', 'nid', 'role', 'age', 'medical_info']
 
         # labels = {
         #     'username' : 'User Name',
@@ -44,6 +44,9 @@ class UserRegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(UserRegistrationForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['placeholder'] = 'Enter your username'
+        self.fields['email'].widget.attrs['placeholder'] = 'Enter your email'
+        self.fields['first_name'].widget.attrs['placeholder'] = 'Enter your first name'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Enter your last name'
         self.fields['password1'].widget.attrs['placeholder'] = 'Enter your password'
         self.fields['password2'].widget.attrs['placeholder'] = 'Confirm your password'
         self.fields['nid'].widget.attrs['placeholder'] = 'Your NID must be unique'

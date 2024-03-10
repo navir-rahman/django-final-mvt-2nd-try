@@ -21,8 +21,22 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls'))
+    path('', include('core.urls')),
+    path('user/', include('django.contrib.auth.urls')),
 
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
+
+
+
+# user/ login/ [name='login']
+# user/ logout/ [name='logout']
+# user/ password_change/ [name='password_change']
+# user/ password_change/done/ [name='password_change_done']
+# user/ password_reset/ [name='password_reset']
+# user/ password_reset/done/ [name='password_reset_done']
+# user/ reset/<uidb64>/<token>/ [name='password_reset_confirm']
+# user/ reset/done/ [name='password_reset_complete']
+# ^(?P<path>.*)$
