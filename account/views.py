@@ -29,7 +29,7 @@ def register(request):
             print(es)
 
 
-            return redirect('register')  
+            return redirect('login')  
     else:
         form = UserRegistrationForm()
     return render(request, 'register.html', {'form': form})
@@ -55,10 +55,22 @@ class profile(View):
     template_name = 'accounts/profile.html'
     def get(self, request):
         form = UserUpdateForm(instance=request.user)
-        return render(request, self.template_name , {'form': form})
+        
+        user_role_doctor =False
+        if request.user.is_authenticated:
+            var = UserProfile.objects.filter(user_account=request.user).first()
+            if var.role == 'Doctor':
+                user_role_doctor = True
+
+        return render(request, self.template_name , {'form': form, 'user_role_doctor': user_role_doctor})
     def post(self, request):
         form = UserUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('profile')  # Redirect to the user's profile page
-        return render(request, self.template_name, {'form': form})
+        var = UserProfile.objects.filter(user_account=request.user).first()
+        user_role_doctor =False
+        if var.role == 'Doctor':
+            user_role_doctor = True
+
+        return render(request, self.template_name, {'form': form, 'user_role_doctor': user_role_doctor})

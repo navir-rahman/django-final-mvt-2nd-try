@@ -11,19 +11,20 @@
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                       <li><a href="{% url "home" %}" class="active">Home</a></li>
-                      {% comment %} <li><a href="shop.html">Our Shop</a></li>
-                      <li><a href="product-details.html">Product Details</a></li>
-                      <li><a href="contact.html">Contact Us</a></li> {% endcomment %}
-                      {% comment %} {% if user.is_authenticated %}
-                         {% if user.userprofile.role == 'Doctor' %} {% endcomment %}
-                         <li><a href="{% url "all_dose" %}">All Dose</a></li>
-                         {% comment %} <li><a href="{% url "password_reset" %}">ps</a></li> {% endcomment %}
-                         {% comment %} {%endif%}
-                         {%endif%} {% endcomment %}
+                      {% comment %} <li><a href="shop.html">Our Shop</a></li> {% endcomment %}
+                      {% comment %} <li><a href="product-details.html">Product Details</a></li> {% endcomment %}
+                      {% comment %} <li><a href="contact.html">Contact Us</a></li> {% endcomment %}
+                        {% if user.is_authenticated %}
+                         {% if user_role_doctor %}
+                            <li><a href="{% url "addCampaign" %}">Add Campaign</a></li>
+                            
+                            {%endif%}
+                        {%endif%} 
+                            
+                      <li><a href="{% url "all_dose" %}">All Dose</a></li>
                       {% if user.is_authenticated %}
-                      <li><a href="{% url "addCampaign" %}">Add Campaign</a></li>
-                      <li><a href="{% url "profile" %}">Profile</a></li>
-                      <li><a href="{% url "my_logout" %}">Sign Out</a></li>
+                        <li><a href="{% url "profile" %}">Profile</a></li>
+                        <li><a href="{% url "my_logout" %}">Sign Out</a></li>
                       {% else %}
                       <li><a href="{% url "register" %}">Sign Up</a></li>
                       <li><a href="{% url "login" %}">Sign In</a></li>

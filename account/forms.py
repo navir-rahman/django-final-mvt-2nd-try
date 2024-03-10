@@ -100,7 +100,7 @@ class UserUpdateForm(forms.ModelForm):
             self.fields['last_name'].widget.attrs['value'] = userInstance.last_name
             self.fields['email'].widget.attrs['value'] = userInstance.email
             self.fields['nid'].widget.attrs['value'] = userProfile_instance.nid
-            # self.fields['role'].widget.attrs['disabled'] = 'disabled'
+            self.fields['role'].widget.attrs['disabled'] = 'disabled'
             self.fields['medical_info'].widget.attrs['placeholder'] = userProfile_instance.medical_info
             self.fields['medical_info'].widget.attrs['value'] = userProfile_instance.medical_info
             self.fields['age'].widget.attrs['value'] = userProfile_instance.age

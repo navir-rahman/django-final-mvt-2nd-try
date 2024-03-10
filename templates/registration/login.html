@@ -37,10 +37,15 @@
                     {{ form.password.errors }}
                   </fieldset>
                 </div>
+                <div class="col-lg-12">
+                  <fieldset>
+                    <a class='btn mb-2' href="{% url "password_reset" %}">Forgot Password</a>
+                  </fieldset>
+                </div>
                 
                 <div class="col-lg-12">
                   <fieldset>
-                    <button type="submit" id="form-submit" class="orange-button">Sign Up</button>
+                    <button type="submit" id="form-submit" class="orange-button">Sign In</button>
                   </fieldset>
                 </div>
               </div>

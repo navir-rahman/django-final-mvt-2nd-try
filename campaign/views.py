@@ -16,6 +16,12 @@ from django.http import HttpResponseRedirect
 #     return render(request, 'makecampaign.html', {'form': form})
 @doctor_required
 def addCampaign(request):
+    user_role_doctor =False
+    if request.user.is_authenticated:
+        var = UserProfile.objects.filter(user_account=request.user).first()
+        if var.role == 'Doctor':
+            user_role_doctor = True
+
     if request.method == 'POST':
         vaccine_form = VaccineCampaignForm(request.POST)
         campaign_form = CampaignForm(request.POST)
@@ -27,16 +33,26 @@ def addCampaign(request):
             userInstance = UserProfile.objects.get(user_account =request.user)
             campaign.doctor = userInstance
             campaign.save()
-            return render(request, 'makecampaign.html', {'vaccine_form': vaccine_form, 'campaign_form': campaign_form})
+
+
+
+            return render(request, 'makecampaign.html', {'vaccine_form': vaccine_form, 'campaign_form': campaign_form, 'user_role_doctor': user_role_doctor})
     else:
+
+
         vaccine_form = VaccineCampaignForm()
         campaign_form = CampaignForm()
-    return render(request, 'makecampaign.html', {'vaccine_form': vaccine_form, 'campaign_form': campaign_form})
+    return render(request, 'makecampaign.html', {'vaccine_form': vaccine_form, 'campaign_form': campaign_form, 'user_role_doctor': user_role_doctor})
 
 
 
 def campaign_detail(request, campaign_id):
     campaign = get_object_or_404(Campaign, pk=campaign_id)
+    var = UserProfile.objects.filter(user_account=request.user).first()
+    user_role_doctor =False
+    if var.role == 'Doctor':
+        user_role_doctor = True
+
     if request.method == 'GET':
         userInstance = UserProfile.objects.get(user_account =request.user)
         first_dose = request.GET.get('first_dose')
@@ -48,12 +64,17 @@ def campaign_detail(request, campaign_id):
             fourth_dose_date = first_dose_date  + timedelta(days=30)
             DoseBooking.objects.get_or_create(patient=userInstance, campaign=campaign, first_dose_date=first_dose_date, second_dose_date = second_dose_date, third_dose_date=third_dose_date, fourth_dose_date=fourth_dose_date)
         # book.save()
-        return render(request, 'productDetails.html', {'campaign': campaign})
+        return render(request, 'productDetails.html', {'campaign': campaign, 'user_role_doctor': user_role_doctor})
 
-    return render(request, 'productDetails.html', {'campaign': campaign})
+    return render(request, 'productDetails.html', {'campaign': campaign, 'user_role_doctor': user_role_doctor})
 
 
 def dose_detail(request, dose_id):
+    user_role_doctor =False
+    if request.user.is_authenticated:
+        var = UserProfile.objects.filter(user_account=request.user).first()
+        if var.role == 'Doctor':
+            user_role_doctor = True
 
     dose = get_object_or_404(DoseBooking, pk=dose_id)
     # campaign = get_object_or_404(Campaign, pk=campaign_id)
@@ -77,11 +98,11 @@ def dose_detail(request, dose_id):
             review.user = UserProfile.objects.get(user_account =request.user)
             review.campaign = campaign
             review.save()
-            return render(request, 'dose_detail.html', {'dose': dose, 'reviews': reviews, 'form': form})
+            return render(request, 'dose_detail.html', {'dose': dose, 'reviews': reviews, 'form': form, 'user_role_doctor': user_role_doctor})
     else:
         form = CampaignReviewForm()
 
-    return render(request, 'dose_detail.html', {'dose': dose, 'reviews': reviews, 'form': form})
+    return render(request, 'dose_detail.html', {'dose': dose, 'reviews': reviews, 'form': form, 'user_role_doctor': user_role_doctor})
 
 
 
@@ -95,13 +116,22 @@ def dose_detail(request, dose_id):
 
 
 def all_dose(request):
+    var = UserProfile.objects.filter(user_account=request.user).first()
+    user_role_doctor =False
+    if var.role == 'Doctor':
+        user_role_doctor = True
     all_dose = DoseBooking.objects.all()
-    return render(request, 'shop.html', {'all_dose': all_dose})
+    return render(request, 'shop.html', {'all_dose': all_dose, 'user_role_doctor': user_role_doctor})
 
 
 
 
 def dose_detail_for_doctor(request, dose_id):
+    user_role_doctor =False
+    if request.user.is_authenticated:
+        var = UserProfile.objects.filter(user_account=request.user).first()
+        if var.role == 'Doctor':
+            user_role_doctor = True
 
     dose = get_object_or_404(DoseBooking, pk=dose_id)
     reviews = CampaignReview.objects.filter(campaign=dose.campaign.id)
@@ -117,7 +147,7 @@ def dose_detail_for_doctor(request, dose_id):
                 dose.fourth_dose_date = request.GET.get('fourth_dose_date')
                 dose.save()
                 return redirect('dose_detail_for_doc', dose_id=dose_id)
-    return render(request, 'dose_detail.html', {'dose': dose, 'reviews': reviews, 'form': form, 'page': 'dose_detail_for_doctor', 'dose_form': dose_form})
+    return render(request, 'dose_detail.html', {'dose': dose, 'reviews': reviews, 'form': form, 'page': 'dose_detail_for_doctor', 'dose_form': dose_form, 'user_role_doctor': user_role_doctor})
 
 
 
